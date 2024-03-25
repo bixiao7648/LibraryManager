@@ -2,4 +2,9 @@
     <string name="app_name">LibraryManager</string>
     <string name="search_button_text">Search</string>
     <string name="search_box_isbn_hint">Please enter the isbn</string>
+    <string name="add_book_title">Book title</string>
+    <string name="add_book_author">Author</string>
+    <string name="add_book_publish_year">Publish year</string>
+    <string name="add_book_isbn">ISBN</string>
+    <string name="add_book_save">SAVE</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.dbdemo.db
+package com.example.librarymanager.db
 
 object BookInfoExt {
     const val TABLE_NAME = "book"

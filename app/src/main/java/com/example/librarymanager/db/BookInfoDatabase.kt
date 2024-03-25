@@ -1,4 +1,4 @@
-package com.example.dbdemo.db
+package com.example.librarymanager.db
 
 import android.content.Context
 import androidx.room.Database
