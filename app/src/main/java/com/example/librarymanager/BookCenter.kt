@@ -1,12 +1,24 @@
 package com.example.librarymanager
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.widget.EditText
+import com.example.librarymanager.db.BookInfo
+import com.example.librarymanager.db.BookInfoDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.launch
+import java.util.concurrent.Executors
 
 class BookCenter {
+
+    private val context = BookApplication.getContext()
+    private val dao = BookInfoDatabase.getInstance(context).bookInfoDao()
+    private val bookDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
+    private val bookScope = CoroutineScope(bookDispatcher)
 
     fun addNewBook(activity: Activity) {
         val dialog = AlertDialog.Builder(activity).create()
@@ -24,15 +36,24 @@ class BookCenter {
         ) { _, _ ->
             val title = etTitle.text.toString()
             val author = etAuthor.text.toString()
-            val publishYear = etPublishYear.text.toString()
+            val publishYear = Integer.parseInt(etPublishYear.text.toString())
             val isbn = etIsbn.text.toString()
-
+            bookScope.launch {
+                BookInfo().let {
+                    it.title = title
+                    it.author = author
+                    it.publishYear = publishYear
+                    it.isbn = isbn
+                    dao.insert(it)
+                }
+            }
         }
 
         dialog.show()
     }
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         private var bookCenter: BookCenter? = null
 
         fun getInstance(): BookCenter {
