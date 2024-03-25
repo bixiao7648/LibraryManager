@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/divider"
-        app:layout_constraintTop_toBottomOf="@id/bt_search"/>
+        app:layout_constraintTop_toBottomOf="@id/bt_search" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/search_box_button_guideline"
