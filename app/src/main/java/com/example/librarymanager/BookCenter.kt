@@ -4,10 +4,15 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.view.LayoutInflater
 import android.widget.EditText
 import com.example.librarymanager.db.BookInfo
 import com.example.librarymanager.db.BookInfoDatabase
+import com.example.librarymanager.db.BookInfoExt.COLUMN_AUTHOR
+import com.example.librarymanager.db.BookInfoExt.COLUMN_ISBN
+import com.example.librarymanager.db.BookInfoExt.COLUMN_PUBLISH_YEAR
+import com.example.librarymanager.db.BookInfoExt.COLUMN_TITLE
 import com.example.librarymanager.recyclerview.BookAdapter
 import kotlinx.coroutines.*
 import java.util.concurrent.Executors
@@ -58,6 +63,16 @@ class BookCenter {
                 adapter.updateData(booksInfo)
             }
         }
+    }
+
+    fun startEditPage(info: BookInfo) {
+        val intent = Intent(context, EditActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.putExtra(COLUMN_TITLE, info.title)
+        intent.putExtra(COLUMN_AUTHOR, info.author)
+        intent.putExtra(COLUMN_PUBLISH_YEAR, info.publishYear)
+        intent.putExtra(COLUMN_ISBN, info.isbn)
+        context.startActivity(intent)
     }
 
     companion object {

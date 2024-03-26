@@ -3,6 +3,7 @@ package com.example.librarymanager.recyclerview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.librarymanager.BookCenter
 import com.example.librarymanager.R
 import com.example.librarymanager.db.BookInfo
 
@@ -16,6 +17,7 @@ class BookAdapter : RecyclerView.Adapter<BookViewHolder>() {
 
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
+            BookCenter.getInstance().startEditPage(items[position])
         }
         holder.title.text = items[position].title
         holder.author.text = items[position].author
