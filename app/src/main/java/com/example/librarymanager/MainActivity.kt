@@ -2,6 +2,7 @@ package com.example.librarymanager
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.librarymanager.recyclerview.BookAdapter
@@ -15,10 +16,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         recyclerView = findViewById(R.id.books_recycler_view)
-        recyclerView.adapter = BookAdapter(listOf("item 1", "item 2", "item 3"))
+        val adapter = BookAdapter()
+        recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+        BookCenter.getInstance().showBooks(adapter)
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             BookCenter.getInstance().addNewBook(this)
+        }
+        findViewById<Button>(R.id.bt_search).setOnClickListener {
+            BookCenter.getInstance().showBooks(adapter)
         }
     }
 }

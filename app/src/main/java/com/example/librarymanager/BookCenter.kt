@@ -8,9 +8,8 @@ import android.view.LayoutInflater
 import android.widget.EditText
 import com.example.librarymanager.db.BookInfo
 import com.example.librarymanager.db.BookInfoDatabase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.launch
+import com.example.librarymanager.recyclerview.BookAdapter
+import kotlinx.coroutines.*
 import java.util.concurrent.Executors
 
 class BookCenter {
@@ -50,6 +49,15 @@ class BookCenter {
         }
 
         dialog.show()
+    }
+
+    fun showBooks(adapter: BookAdapter) {
+        bookScope.launch {
+            val booksInfo = dao.getBooks()
+            withContext(Dispatchers.Main) {
+                adapter.updateData(booksInfo)
+            }
+        }
     }
 
     companion object {
