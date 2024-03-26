@@ -7,9 +7,11 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.view.LayoutInflater
 import android.widget.EditText
+import android.widget.Toast
 import com.example.librarymanager.db.BookInfo
 import com.example.librarymanager.db.BookInfoDatabase
 import com.example.librarymanager.db.BookInfoExt.COLUMN_AUTHOR
+import com.example.librarymanager.db.BookInfoExt.COLUMN_ID
 import com.example.librarymanager.db.BookInfoExt.COLUMN_ISBN
 import com.example.librarymanager.db.BookInfoExt.COLUMN_PUBLISH_YEAR
 import com.example.librarymanager.db.BookInfoExt.COLUMN_TITLE
@@ -40,7 +42,7 @@ class BookCenter {
         ) { _, _ ->
             val title = etTitle.text.toString()
             val author = etAuthor.text.toString()
-            val publishYear = Integer.parseInt(etPublishYear.text.toString())
+            val publishYear = etPublishYear.text.toString().toInt()
             val isbn = etIsbn.text.toString()
             bookScope.launch {
                 BookInfo().let {
@@ -65,14 +67,24 @@ class BookCenter {
         }
     }
 
-    fun startEditPage(info: BookInfo) {
+    fun startEditPage(bookInfo: BookInfo) {
         val intent = Intent(context, EditActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.putExtra(COLUMN_TITLE, info.title)
-        intent.putExtra(COLUMN_AUTHOR, info.author)
-        intent.putExtra(COLUMN_PUBLISH_YEAR, info.publishYear)
-        intent.putExtra(COLUMN_ISBN, info.isbn)
+        intent.putExtra(COLUMN_ID, bookInfo.id)
+        intent.putExtra(COLUMN_TITLE, bookInfo.title)
+        intent.putExtra(COLUMN_AUTHOR, bookInfo.author)
+        intent.putExtra(COLUMN_PUBLISH_YEAR, bookInfo.publishYear)
+        intent.putExtra(COLUMN_ISBN, bookInfo.isbn)
         context.startActivity(intent)
+    }
+
+    fun updateBookInfo(bookInfo: BookInfo) {
+        bookScope.launch {
+            dao.update(bookInfo)
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, R.string.data_updated, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     companion object {

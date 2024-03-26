@@ -7,4 +7,5 @@
     <string name="add_book_publish_year">Publish year</string>
     <string name="add_book_isbn">ISBN</string>
     <string name="add_book_save">SAVE</string>
+    <string name="data_updated">Data is updated successfully!</string>
 </resources>

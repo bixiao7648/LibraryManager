@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import com.example.librarymanager.db.BookInfo
 import com.example.librarymanager.db.BookInfoExt.COLUMN_AUTHOR
+import com.example.librarymanager.db.BookInfoExt.COLUMN_ID
 import com.example.librarymanager.db.BookInfoExt.COLUMN_ISBN
 import com.example.librarymanager.db.BookInfoExt.COLUMN_PUBLISH_YEAR
 import com.example.librarymanager.db.BookInfoExt.COLUMN_TITLE
@@ -24,7 +26,7 @@ class EditActivity : AppCompatActivity() {
         etPublishYear = findViewById(R.id.et_dialog_publish_year)
         etIsbn = findViewById(R.id.et_dialog_isbn)
         findViewById<Button>(R.id.bt_edit_save).setOnClickListener {
-
+            updateInfo()
         }
         initData()
     }
@@ -38,5 +40,24 @@ class EditActivity : AppCompatActivity() {
         etAuthor.setText(author)
         etPublishYear.setText(publishYear.toString())
         etIsbn.setText(isbn)
+    }
+
+    private fun updateInfo() {
+        val id = intent.getIntExtra(COLUMN_ID, -1)
+        if (id < 0) {
+            return
+        }
+        val title = etTitle.text.toString()
+        val author = etAuthor.text.toString()
+        val publishYear = etPublishYear.text.toString().toInt()
+        val isbn = etIsbn.text.toString()
+        BookInfo().let {
+            it.id = id
+            it.title = title
+            it.author = author
+            it.publishYear = publishYear
+            it.isbn = isbn
+            BookCenter.getInstance().updateBookInfo(it)
+        }
     }
 }
