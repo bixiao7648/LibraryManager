@@ -19,6 +19,10 @@ class BookAdapter : RecyclerView.Adapter<BookViewHolder>() {
         holder.itemView.setOnClickListener {
             BookCenter.getInstance().startEditPage(items[position])
         }
+        holder.itemView.setOnLongClickListener {
+            BookCenter.getInstance().deleteBookInfo(items[position].id)
+            true
+        }
         holder.title.text = items[position].title
         holder.author.text = items[position].author
         holder.isbn.text = items[position].isbn

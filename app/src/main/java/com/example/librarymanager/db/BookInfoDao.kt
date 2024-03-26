@@ -26,4 +26,7 @@ interface BookInfoDao {
 
     @Query("SELECT * from book WHERE title = :title")
     fun getBookByTitle(title: String): BookInfo?
+
+    @Query("DELETE from book WHERE id = :id")
+    fun deleteBookById(id: Int)
 }

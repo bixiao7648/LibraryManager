@@ -1,7 +1,6 @@
 package com.example.librarymanager
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -23,46 +22,74 @@ class BookCenter {
 
     private val context = BookApplication.getContext()
     private val dao = BookInfoDatabase.getInstance(context).bookInfoDao()
+    // Use a single thread for the database operation.
     private val bookDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
     private val bookScope = CoroutineScope(bookDispatcher)
+    // For showing a dialog. When the activity is destroyed, clear it.
+    var mainActivity: MainActivity? = null
 
-    fun addNewBook(activity: Activity) {
-        val dialog = AlertDialog.Builder(activity).create()
-        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_add_book, null)
-        dialog.setView(view)
+    fun addNewBook() {
+        mainActivity?.let { activity ->
+            val dialog = AlertDialog.Builder(activity).create()
+            val view = LayoutInflater.from(activity).inflate(R.layout.dialog_add_book, null)
+            dialog.setView(view)
 
-        val etTitle = view.findViewById<EditText>(R.id.et_dialog_title)
-        val etAuthor = view.findViewById<EditText>(R.id.et_dialog_author)
-        val etPublishYear = view.findViewById<EditText>(R.id.et_dialog_publish_year)
-        val etIsbn = view.findViewById<EditText>(R.id.et_dialog_isbn)
+            val etTitle = view.findViewById<EditText>(R.id.et_dialog_title)
+            val etAuthor = view.findViewById<EditText>(R.id.et_dialog_author)
+            val etPublishYear = view.findViewById<EditText>(R.id.et_dialog_publish_year)
+            val etIsbn = view.findViewById<EditText>(R.id.et_dialog_isbn)
 
-        dialog.setButton(
-            DialogInterface.BUTTON_POSITIVE,
-            activity.getString(R.string.add_book_save)
-        ) { _, _ ->
-            val title = etTitle.text.toString()
-            val author = etAuthor.text.toString()
-            val publishYear = etPublishYear.text.toString().toInt()
-            val isbn = etIsbn.text.toString()
-            bookScope.launch {
-                BookInfo().let {
-                    it.title = title
-                    it.author = author
-                    it.publishYear = publishYear
-                    it.isbn = isbn
-                    dao.insert(it)
+            dialog.setButton(
+                DialogInterface.BUTTON_POSITIVE,
+                activity.getString(R.string.add_book_save)
+            ) { _, _ ->
+                val title = etTitle.text.toString()
+                val author = etAuthor.text.toString()
+                val publishYear = etPublishYear.text.toString().toInt()
+                val isbn = etIsbn.text.toString()
+                bookScope.launch {
+                    BookInfo().let {
+                        it.title = title
+                        it.author = author
+                        it.publishYear = publishYear
+                        it.isbn = isbn
+                        dao.insert(it)
+                    }
                 }
             }
-        }
 
-        dialog.show()
+            dialog.show()
+        }
     }
 
-    fun showBooks(adapter: BookAdapter) {
+    fun deleteBookInfo(id: Int?) {
+        mainActivity?.let { activity ->
+            AlertDialog.Builder(activity)
+                .setTitle(R.string.delete_title)
+                .setMessage(R.string.delete_message)
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    id?.let {
+                        bookScope.launch {
+                            dao.deleteBookById(it)
+                            val booksInfo = dao.getBooks()
+                            withContext(Dispatchers.Main) {
+                                mainActivity?.adapter?.updateData(booksInfo)
+                            }
+                        }
+                    }
+                }
+                .setNegativeButton(android.R.string.cancel) { obj, _ ->
+                    obj.dismiss()
+                }
+                .show()
+        }
+    }
+
+    fun showBooks() {
         bookScope.launch {
             val booksInfo = dao.getBooks()
             withContext(Dispatchers.Main) {
-                adapter.updateData(booksInfo)
+                mainActivity?.adapter?.updateData(booksInfo)
             }
         }
     }

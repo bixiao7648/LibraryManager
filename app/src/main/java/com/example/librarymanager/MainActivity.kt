@@ -11,25 +11,31 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: BookAdapter
+    var adapter: BookAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        adapter = BookAdapter()
+        BookCenter.getInstance().mainActivity = this
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
-            BookCenter.getInstance().addNewBook(this)
+            BookCenter.getInstance().addNewBook()
         }
         findViewById<Button>(R.id.bt_search).setOnClickListener {
-            BookCenter.getInstance().showBooks(adapter)
+            BookCenter.getInstance().showBooks()
         }
         recyclerView = findViewById(R.id.books_recycler_view)
-        adapter = BookAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onStart() {
         super.onStart()
-        BookCenter.getInstance().showBooks(adapter)
+        BookCenter.getInstance().showBooks()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        BookCenter.getInstance().mainActivity = null
     }
 }

@@ -21,6 +21,7 @@ class EditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
+        setTitle(R.string.edit_page_title)
         etTitle = findViewById(R.id.et_dialog_title)
         etAuthor = findViewById(R.id.et_dialog_author)
         etPublishYear = findViewById(R.id.et_dialog_publish_year)
