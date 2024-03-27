@@ -43,17 +43,25 @@ class BookCenter {
                 DialogInterface.BUTTON_POSITIVE,
                 activity.getString(R.string.add_book_save)
             ) { _, _ ->
-                val title = etTitle.text.toString()
-                val author = etAuthor.text.toString()
-                val publishYear = etPublishYear.text.toString().toInt()
-                val isbn = etIsbn.text.toString()
-                bookScope.launch {
-                    BookInfo().let {
-                        it.title = title
-                        it.author = author
-                        it.publishYear = publishYear
-                        it.isbn = isbn
-                        dao.insert(it)
+                if (etTitle.text.isEmpty()
+                    || etAuthor.text.isEmpty()
+                    || etPublishYear.text.isEmpty()
+                    || etIsbn.text.isEmpty()
+                ) {
+                    Toast.makeText(context, R.string.add_book_info_required, Toast.LENGTH_SHORT).show()
+                } else {
+                    val title = etTitle.text.toString()
+                    val author = etAuthor.text.toString()
+                    val publishYear = etPublishYear.text.toString().toInt()
+                    val isbn = etIsbn.text.toString()
+                    bookScope.launch {
+                        BookInfo().let {
+                            it.title = title
+                            it.author = author
+                            it.publishYear = publishYear
+                            it.isbn = isbn
+                            dao.insert(it)
+                        }
                     }
                 }
             }
