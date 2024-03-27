@@ -85,9 +85,9 @@ class BookCenter {
         }
     }
 
-    fun showBooks() {
+    fun showBooks(keyword: String) {
         bookScope.launch {
-            val booksInfo = dao.getBooks()
+            val booksInfo = dao.getBooksByIsbn(keyword)
             withContext(Dispatchers.Main) {
                 mainActivity?.adapter?.updateData(booksInfo)
             }
