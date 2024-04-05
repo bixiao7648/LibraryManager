@@ -1,17 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".EditActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <include layout="@layout/dialog_add_book"/>
+    <data>
+        <variable
+            name="activity"
+            type="com.example.librarymanager.EditActivity" />
+        <variable
+            name="title"
+            type="String" />
+        <variable
+            name="author"
+            type="String" />
+        <variable
+            name="publishYear"
+            type="String" />
+        <variable
+            name="isbn"
+            type="String" />
+    </data>
 
-    <Button
-        android:id="@+id/bt_edit_save"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/add_book_save"
-        app:layout_constraintBottom_toBottomOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        tools:context=".EditActivity">
+
+        <include
+            android:id="@+id/edit_include"
+            layout="@layout/dialog_add_book"
+            app:title="@={title}"
+            app:author="@={author}"
+            app:publishYear="@={publishYear}"
+            app:isbn="@={isbn}" />
+
+        <Button
+            android:id="@+id/bt_edit_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_book_save"
+            android:onClick="@{()->activity.updateInfo()}"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

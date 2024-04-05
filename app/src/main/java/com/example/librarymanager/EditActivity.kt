@@ -2,8 +2,8 @@ package com.example.librarymanager
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
+import androidx.databinding.DataBindingUtil
+import com.example.librarymanager.databinding.ActivityEditBinding
 import com.example.librarymanager.db.BookInfo
 import com.example.librarymanager.db.BookInfoExt.COLUMN_AUTHOR
 import com.example.librarymanager.db.BookInfoExt.COLUMN_ID
@@ -13,45 +13,32 @@ import com.example.librarymanager.db.BookInfoExt.COLUMN_TITLE
 
 class EditActivity : AppCompatActivity() {
 
-    private lateinit var etTitle: EditText
-    private lateinit var etAuthor: EditText
-    private lateinit var etPublishYear: EditText
-    private lateinit var etIsbn: EditText
+    private lateinit var editBinding: ActivityEditBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit)
+        editBinding = DataBindingUtil.setContentView(this, R.layout.activity_edit)
         setTitle(R.string.edit_page_title)
-        etTitle = findViewById(R.id.et_dialog_title)
-        etAuthor = findViewById(R.id.et_dialog_author)
-        etPublishYear = findViewById(R.id.et_dialog_publish_year)
-        etIsbn = findViewById(R.id.et_dialog_isbn)
-        findViewById<Button>(R.id.bt_edit_save).setOnClickListener {
-            updateInfo()
-        }
         initData()
     }
 
     private fun initData() {
-        val title = intent.getStringExtra(COLUMN_TITLE)
-        val author = intent.getStringExtra(COLUMN_AUTHOR)
-        val publishYear = intent.getIntExtra(COLUMN_PUBLISH_YEAR, 0)
-        val isbn = intent.getStringExtra(COLUMN_ISBN)
-        etTitle.setText(title)
-        etAuthor.setText(author)
-        etPublishYear.setText(publishYear.toString())
-        etIsbn.setText(isbn)
+        editBinding.activity = this
+        editBinding.title = intent.getStringExtra(COLUMN_TITLE)
+        editBinding.author = intent.getStringExtra(COLUMN_AUTHOR)
+        editBinding.publishYear = intent.getIntExtra(COLUMN_PUBLISH_YEAR, 0).toString()
+        editBinding.isbn = intent.getStringExtra(COLUMN_ISBN)
     }
 
-    private fun updateInfo() {
+    fun updateInfo() {
         val id = intent.getIntExtra(COLUMN_ID, -1)
         if (id < 0) {
             return
         }
-        val title = etTitle.text.toString()
-        val author = etAuthor.text.toString()
-        val publishYear = etPublishYear.text.toString().toInt()
-        val isbn = etIsbn.text.toString()
+        val title = editBinding.title
+        val author = editBinding.author
+        val publishYear = editBinding.publishYear?.toInt() ?: 0
+        val isbn = editBinding.isbn
         BookInfo().let {
             it.id = id
             it.title = title

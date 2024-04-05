@@ -1,146 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/gray"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-   <TextView
-       android:id="@+id/tv_dialog_title"
-       android:layout_width="0dp"
-       android:layout_height="wrap_content"
-       android:text="@string/add_book_title"
-       android:layout_margin="8dp"
-       android:maxLines="1"
-       android:textSize="14sp"
-       android:textColor="?attr/colorPrimary"
-       app:layout_constraintTop_toTopOf="parent"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintEnd_toStartOf="@id/edit_text_start_guideline" />
+   <data>
+      <variable
+          name="title"
+          type="String" />
+      <variable
+          name="author"
+          type="String" />
+      <variable
+          name="publishYear"
+          type="String" />
+      <variable
+          name="isbn"
+          type="String" />
+   </data>
 
-   <EditText
-       android:id="@+id/et_dialog_title"
-       android:layout_width="0dp"
-       android:layout_height="wrap_content"
-       android:hint="@string/add_book_title"
-       android:textSize="14sp"
-       app:layout_constraintTop_toTopOf="@id/tv_dialog_title"
-       app:layout_constraintBottom_toBottomOf="@id/tv_dialog_title"
-       app:layout_constraintStart_toEndOf="@id/edit_text_start_guideline"
-       app:layout_constraintEnd_toStartOf="@id/edit_text_end_guideline" />
-
-   <View
-       android:id="@+id/dialog_divider_1"
+   <androidx.constraintlayout.widget.ConstraintLayout
        android:layout_width="match_parent"
-       android:layout_height="1dp"
-       android:background="@color/divider"
-       android:layout_marginTop="8dp"
-       app:layout_constraintTop_toBottomOf="@id/tv_dialog_title"/>
+       android:layout_height="match_parent"
+       android:background="@color/gray"
+       android:paddingTop="8dp"
+       android:paddingBottom="8dp">
 
-   <TextView
-       android:id="@+id/tv_dialog_author"
-       android:layout_width="0dp"
-       android:layout_height="wrap_content"
-       android:text="@string/add_book_author"
-       android:layout_margin="8dp"
-       android:maxLines="1"
-       android:textSize="14sp"
-       android:textColor="?attr/colorPrimary"
-       app:layout_constraintTop_toBottomOf="@id/dialog_divider_1"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintEnd_toStartOf="@id/edit_text_start_guideline" />
+      <TextView
+          android:id="@+id/tv_dialog_title"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:text="@string/add_book_title"
+          android:layout_margin="8dp"
+          android:maxLines="1"
+          android:textSize="14sp"
+          android:textColor="?attr/colorPrimary"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/edit_text_start_guideline" />
 
-   <EditText
-       android:id="@+id/et_dialog_author"
-       android:layout_width="0dp"
-       android:layout_height="wrap_content"
-       android:hint="@string/add_book_author"
-       android:textSize="14sp"
-       app:layout_constraintTop_toTopOf="@id/tv_dialog_author"
-       app:layout_constraintBottom_toBottomOf="@id/tv_dialog_author"
-       app:layout_constraintStart_toEndOf="@id/edit_text_start_guideline"
-       app:layout_constraintEnd_toStartOf="@id/edit_text_end_guideline" />
+      <EditText
+          android:id="@+id/et_dialog_title"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:hint="@string/add_book_title"
+          android:text="@={title}"
+          android:textSize="14sp"
+          app:layout_constraintTop_toTopOf="@id/tv_dialog_title"
+          app:layout_constraintBottom_toBottomOf="@id/tv_dialog_title"
+          app:layout_constraintStart_toEndOf="@id/edit_text_start_guideline"
+          app:layout_constraintEnd_toStartOf="@id/edit_text_end_guideline" />
 
-   <View
-       android:id="@+id/dialog_divider_2"
-       android:layout_width="match_parent"
-       android:layout_height="1dp"
-       android:background="@color/divider"
-       android:layout_marginTop="8dp"
-       app:layout_constraintTop_toBottomOf="@id/tv_dialog_author"/>
+      <View
+          android:id="@+id/dialog_divider_1"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/divider"
+          android:layout_marginTop="8dp"
+          app:layout_constraintTop_toBottomOf="@id/tv_dialog_title" />
 
-   <TextView
-       android:id="@+id/tv_dialog_publish_year"
-       android:layout_width="0dp"
-       android:layout_height="wrap_content"
-       android:text="@string/add_book_publish_year"
-       android:layout_margin="8dp"
-       android:maxLines="1"
-       android:textSize="14sp"
-       android:textColor="?attr/colorPrimary"
-       app:layout_constraintTop_toBottomOf="@id/dialog_divider_2"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintEnd_toStartOf="@id/edit_text_start_guideline" />
+      <TextView
+          android:id="@+id/tv_dialog_author"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:text="@string/add_book_author"
+          android:layout_margin="8dp"
+          android:maxLines="1"
+          android:textSize="14sp"
+          android:textColor="?attr/colorPrimary"
+          app:layout_constraintTop_toBottomOf="@id/dialog_divider_1"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/edit_text_start_guideline" />
 
-   <EditText
-       android:id="@+id/et_dialog_publish_year"
-       android:layout_width="0dp"
-       android:layout_height="wrap_content"
-       android:hint="@string/add_book_publish_year"
-       android:textSize="14sp"
-       android:inputType="number"
-       app:layout_constraintTop_toTopOf="@id/tv_dialog_publish_year"
-       app:layout_constraintBottom_toBottomOf="@id/tv_dialog_publish_year"
-       app:layout_constraintStart_toEndOf="@id/edit_text_start_guideline"
-       app:layout_constraintEnd_toStartOf="@id/edit_text_end_guideline" />
+      <EditText
+          android:id="@+id/et_dialog_author"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:hint="@string/add_book_author"
+          android:text="@={author}"
+          android:textSize="14sp"
+          app:layout_constraintTop_toTopOf="@id/tv_dialog_author"
+          app:layout_constraintBottom_toBottomOf="@id/tv_dialog_author"
+          app:layout_constraintStart_toEndOf="@id/edit_text_start_guideline"
+          app:layout_constraintEnd_toStartOf="@id/edit_text_end_guideline" />
 
-   <View
-       android:id="@+id/dialog_divider_3"
-       android:layout_width="match_parent"
-       android:layout_height="1dp"
-       android:background="@color/divider"
-       android:layout_marginTop="8dp"
-       app:layout_constraintTop_toBottomOf="@id/tv_dialog_publish_year"/>
+      <View
+          android:id="@+id/dialog_divider_2"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/divider"
+          android:layout_marginTop="8dp"
+          app:layout_constraintTop_toBottomOf="@id/tv_dialog_author" />
 
-   <TextView
-       android:id="@+id/tv_dialog_isbn"
-       android:layout_width="0dp"
-       android:layout_height="wrap_content"
-       android:text="@string/add_book_isbn"
-       android:layout_margin="8dp"
-       android:maxLines="1"
-       android:textSize="14sp"
-       android:textColor="?attr/colorPrimary"
-       app:layout_constraintTop_toBottomOf="@id/dialog_divider_3"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintEnd_toStartOf="@id/edit_text_start_guideline" />
+      <TextView
+          android:id="@+id/tv_dialog_publish_year"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:text="@string/add_book_publish_year"
+          android:layout_margin="8dp"
+          android:maxLines="1"
+          android:textSize="14sp"
+          android:textColor="?attr/colorPrimary"
+          app:layout_constraintTop_toBottomOf="@id/dialog_divider_2"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/edit_text_start_guideline" />
 
-   <EditText
-       android:id="@+id/et_dialog_isbn"
-       android:layout_width="0dp"
-       android:layout_height="wrap_content"
-       android:hint="@string/add_book_isbn"
-       android:textSize="14sp"
-       android:inputType="number"
-       app:layout_constraintTop_toTopOf="@id/tv_dialog_isbn"
-       app:layout_constraintBottom_toBottomOf="@id/tv_dialog_isbn"
-       app:layout_constraintStart_toEndOf="@id/edit_text_start_guideline"
-       app:layout_constraintEnd_toStartOf="@id/edit_text_end_guideline" />
+      <EditText
+          android:id="@+id/et_dialog_publish_year"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:hint="@string/add_book_publish_year"
+          android:text="@={publishYear}"
+          android:textSize="14sp"
+          android:inputType="number"
+          app:layout_constraintTop_toTopOf="@id/tv_dialog_publish_year"
+          app:layout_constraintBottom_toBottomOf="@id/tv_dialog_publish_year"
+          app:layout_constraintStart_toEndOf="@id/edit_text_start_guideline"
+          app:layout_constraintEnd_toStartOf="@id/edit_text_end_guideline" />
 
-   <androidx.constraintlayout.widget.Guideline
-       android:id="@+id/edit_text_start_guideline"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:orientation="vertical"
-       app:layout_constraintGuide_percent="0.3" />
+      <View
+          android:id="@+id/dialog_divider_3"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/divider"
+          android:layout_marginTop="8dp"
+          app:layout_constraintTop_toBottomOf="@id/tv_dialog_publish_year" />
 
-   <androidx.constraintlayout.widget.Guideline
-       android:id="@+id/edit_text_end_guideline"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:orientation="vertical"
-       app:layout_constraintGuide_percent="0.9" />
+      <TextView
+          android:id="@+id/tv_dialog_isbn"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:text="@string/add_book_isbn"
+          android:layout_margin="8dp"
+          android:maxLines="1"
+          android:textSize="14sp"
+          android:textColor="?attr/colorPrimary"
+          app:layout_constraintTop_toBottomOf="@id/dialog_divider_3"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/edit_text_start_guideline" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+      <EditText
+          android:id="@+id/et_dialog_isbn"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:hint="@string/add_book_isbn"
+          android:text="@={isbn}"
+          android:textSize="14sp"
+          android:inputType="number"
+          app:layout_constraintTop_toTopOf="@id/tv_dialog_isbn"
+          app:layout_constraintBottom_toBottomOf="@id/tv_dialog_isbn"
+          app:layout_constraintStart_toEndOf="@id/edit_text_start_guideline"
+          app:layout_constraintEnd_toStartOf="@id/edit_text_end_guideline" />
+
+      <androidx.constraintlayout.widget.Guideline
+          android:id="@+id/edit_text_start_guideline"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          app:layout_constraintGuide_percent="0.3" />
+
+      <androidx.constraintlayout.widget.Guideline
+          android:id="@+id/edit_text_end_guideline"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          app:layout_constraintGuide_percent="0.9" />
+
+   </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
