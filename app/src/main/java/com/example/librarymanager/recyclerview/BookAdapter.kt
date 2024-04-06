@@ -2,9 +2,11 @@ package com.example.librarymanager.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.librarymanager.BookCenter
 import com.example.librarymanager.R
+import com.example.librarymanager.databinding.ItemLayoutBinding
 import com.example.librarymanager.db.BookInfo
 
 class BookAdapter : RecyclerView.Adapter<BookViewHolder>() {
@@ -12,7 +14,8 @@ class BookAdapter : RecyclerView.Adapter<BookViewHolder>() {
     private var items: List<BookInfo> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
-        return BookViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false))
+        val itemBinding = DataBindingUtil.inflate<ItemLayoutBinding>(LayoutInflater.from(parent.context), R.layout.item_layout, parent, false)
+        return BookViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
@@ -23,9 +26,9 @@ class BookAdapter : RecyclerView.Adapter<BookViewHolder>() {
             BookCenter.getInstance().deleteBookInfo(items[position].id)
             true
         }
-        holder.title.text = items[position].title
-        holder.author.text = items[position].author
-        holder.isbn.text = items[position].isbn
+        holder.binding.title = items[position].title
+        holder.binding.author = items[position].author
+        holder.binding.isbn = items[position].isbn
     }
 
     override fun getItemCount(): Int {

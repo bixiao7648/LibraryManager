@@ -7,6 +7,8 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import com.example.librarymanager.databinding.DialogAddBookBinding
 import com.example.librarymanager.db.BookInfo
 import com.example.librarymanager.db.BookInfoDatabase
 import com.example.librarymanager.db.BookInfoExt.COLUMN_AUTHOR
@@ -31,35 +33,26 @@ class BookCenter {
     fun addNewBook() {
         mainActivity?.let { activity ->
             val dialog = AlertDialog.Builder(activity).create()
-            val view = LayoutInflater.from(activity).inflate(R.layout.dialog_add_book, null)
-            dialog.setView(view)
-
-            val etTitle = view.findViewById<EditText>(R.id.et_dialog_title)
-            val etAuthor = view.findViewById<EditText>(R.id.et_dialog_author)
-            val etPublishYear = view.findViewById<EditText>(R.id.et_dialog_publish_year)
-            val etIsbn = view.findViewById<EditText>(R.id.et_dialog_isbn)
+            val binding = DataBindingUtil.inflate<DialogAddBookBinding>(LayoutInflater.from(activity), R.layout.dialog_add_book, null, false)
+            dialog.setView(binding.root)
 
             dialog.setButton(
                 DialogInterface.BUTTON_POSITIVE,
                 activity.getString(R.string.add_book_save)
             ) { _, _ ->
-                if (etTitle.text.isEmpty()
-                    || etAuthor.text.isEmpty()
-                    || etPublishYear.text.isEmpty()
-                    || etIsbn.text.isEmpty()
+                if (binding.title.isNullOrEmpty()
+                    || binding.author.isNullOrEmpty()
+                    || binding.publishYear.isNullOrEmpty()
+                    || binding.isbn.isNullOrEmpty()
                 ) {
                     Toast.makeText(context, R.string.add_book_info_required, Toast.LENGTH_SHORT).show()
                 } else {
-                    val title = etTitle.text.toString()
-                    val author = etAuthor.text.toString()
-                    val publishYear = etPublishYear.text.toString().toInt()
-                    val isbn = etIsbn.text.toString()
                     bookScope.launch {
                         BookInfo().let {
-                            it.title = title
-                            it.author = author
-                            it.publishYear = publishYear
-                            it.isbn = isbn
+                            it.title = binding.title
+                            it.author = binding.author
+                            it.publishYear = binding.publishYear?.toInt() ?: 0
+                            it.isbn = binding.isbn
                             dao.insert(it)
                         }
                     }
