@@ -1,7 +1,7 @@
 package com.example.librarymanager.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.librarymanager.BookCenter
+import com.example.librarymanager.BookRepository
 import com.example.librarymanager.db.BookInfo
 
 class EditViewModel : ViewModel() {
@@ -20,7 +20,7 @@ class EditViewModel : ViewModel() {
             it.author = author
             it.publishYear = publishYear.toInt()
             it.isbn = isbn
-            BookCenter.getInstance().updateBookInfo(it)
+            BookRepository.getInstance().updateBookInfo(it)
         }
     }
 }

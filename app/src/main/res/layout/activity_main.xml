@@ -5,9 +5,6 @@
 
     <data>
         <variable
-            name="activity"
-            type="com.example.librarymanager.MainActivity" />
-        <variable
             name="viewModel"
             type="com.example.librarymanager.viewmodel.MainViewModel" />
         <variable

@@ -4,12 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.librarymanager.BookCenter
 import com.example.librarymanager.R
 import com.example.librarymanager.databinding.ItemLayoutBinding
 import com.example.librarymanager.db.BookInfo
 
-class BookAdapter : RecyclerView.Adapter<BookViewHolder>() {
+class BookAdapter(
+    private val onDeleteClick: (Int) -> Unit,
+    private val onItemClick: (BookInfo) -> Unit
+) : RecyclerView.Adapter<BookViewHolder>() {
 
     private var items: List<BookInfo> = listOf()
 
@@ -20,10 +22,10 @@ class BookAdapter : RecyclerView.Adapter<BookViewHolder>() {
 
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
-            BookCenter.getInstance().startEditPage(items[position])
+            onItemClick.invoke(items[position])
         }
         holder.itemView.setOnLongClickListener {
-            BookCenter.getInstance().deleteBookInfo(items[position].id)
+            items[position].id?.run { onDeleteClick.invoke(this) }
             true
         }
         holder.binding.title = items[position].title

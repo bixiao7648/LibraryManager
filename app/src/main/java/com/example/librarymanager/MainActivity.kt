@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.librarymanager.databinding.ActivityMainBinding
+import com.example.librarymanager.db.BookInfo
 import com.example.librarymanager.recyclerview.BookAdapter
 import com.example.librarymanager.viewmodel.MainViewModel
 
@@ -21,23 +22,25 @@ class MainActivity : AppCompatActivity() {
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         mainBinding.lifecycleOwner = this
         mainBinding.viewModel = viewModel
-        mainBinding.activity = this
-        adapter = BookAdapter()
+        adapter = BookAdapter(
+            { viewModel.showDeleteBookDialog(this, it, ::update) },
+            { viewModel.startEditPage(this, it) }
+        )
         mainBinding.adapter = adapter
-        BookCenter.getInstance().mainActivity = this
         mainBinding.fab.setOnClickListener {
-            BookCenter.getInstance().addNewBook()
+            viewModel.showAddBookDialog(this, ::update)
         }
         mainBinding.btSearch.setOnClickListener {
-            viewModel.searchViewContent.value?.run { BookCenter.getInstance().showBooks(this) }
+            viewModel.searchViewContent.value?.run {
+                BookRepository.getInstance().showBooks(this, ::update)
+            }
         }
         viewModel.searchViewContent.observe(this) {
-            BookCenter.getInstance().showBooks(it)
+            BookRepository.getInstance().showBooks(it, ::update)
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        BookCenter.getInstance().mainActivity = null
+    private fun update(booksInfo: List<BookInfo>) {
+        adapter?.updateData(booksInfo)
     }
 }
