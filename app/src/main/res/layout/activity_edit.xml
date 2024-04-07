@@ -8,17 +8,8 @@
             name="activity"
             type="com.example.librarymanager.EditActivity" />
         <variable
-            name="title"
-            type="String" />
-        <variable
-            name="author"
-            type="String" />
-        <variable
-            name="publishYear"
-            type="String" />
-        <variable
-            name="isbn"
-            type="String" />
+            name="viewModel"
+            type="com.example.librarymanager.viewmodel.EditViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,17 +20,16 @@
         <include
             android:id="@+id/edit_include"
             layout="@layout/dialog_add_book"
-            app:title="@={title}"
-            app:author="@={author}"
-            app:publishYear="@={publishYear}"
-            app:isbn="@={isbn}" />
+            app:title="@={viewModel.title}"
+            app:author="@={viewModel.author}"
+            app:publishYear="@={viewModel.publishYear}"
+            app:isbn="@={viewModel.isbn}" />
 
         <Button
             android:id="@+id/bt_edit_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_book_save"
-            android:onClick="@{()->activity.updateInfo()}"
             app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
