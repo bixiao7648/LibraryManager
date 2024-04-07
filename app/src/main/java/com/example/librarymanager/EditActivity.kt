@@ -19,36 +19,24 @@ class EditActivity : AppCompatActivity() {
         ViewModelProvider(this)[EditViewModel::class.java]
     }
     private lateinit var editBinding: ActivityEditBinding
+    private var currentItemId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         editBinding = DataBindingUtil.setContentView(this, R.layout.activity_edit)
+        editBinding.lifecycleOwner = this
         setTitle(R.string.edit_page_title)
-        editBinding.btEditSave.setOnClickListener { updateInfo() }
+        editBinding.btEditSave.setOnClickListener { viewModel.updateInfo(currentItemId) }
         initData()
     }
 
     private fun initData() {
         editBinding.activity = this
         editBinding.viewModel = viewModel
+        currentItemId = intent.getIntExtra(COLUMN_ID, -1)
         viewModel.title = intent.getStringExtra(COLUMN_TITLE) ?: ""
         viewModel.author = intent.getStringExtra(COLUMN_AUTHOR) ?: ""
         viewModel.publishYear = intent.getIntExtra(COLUMN_PUBLISH_YEAR, 0).toString()
         viewModel.isbn = intent.getStringExtra(COLUMN_ISBN) ?: ""
-    }
-
-    fun updateInfo() {
-        val id = intent.getIntExtra(COLUMN_ID, -1)
-        if (id < 0) {
-            return
-        }
-        BookInfo().let {
-            it.id = id
-            it.title = viewModel.title
-            it.author = viewModel.author
-            it.publishYear = viewModel.publishYear.toInt()
-            it.isbn = viewModel.isbn
-            BookCenter.getInstance().updateBookInfo(it)
-        }
     }
 }

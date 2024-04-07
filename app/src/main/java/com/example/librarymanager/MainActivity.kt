@@ -29,13 +29,11 @@ class MainActivity : AppCompatActivity() {
             BookCenter.getInstance().addNewBook()
         }
         mainBinding.btSearch.setOnClickListener {
-            BookCenter.getInstance().showBooks(viewModel.searchViewContent)
+            viewModel.searchViewContent.value?.run { BookCenter.getInstance().showBooks(this) }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        BookCenter.getInstance().showBooks(viewModel.searchViewContent)
+        viewModel.searchViewContent.observe(this) {
+            BookCenter.getInstance().showBooks(it)
+        }
     }
 
     override fun onDestroy() {
