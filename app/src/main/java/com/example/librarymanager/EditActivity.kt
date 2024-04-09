@@ -26,7 +26,7 @@ class EditActivity : AppCompatActivity() {
         editBinding = DataBindingUtil.setContentView(this, R.layout.activity_edit)
         editBinding.lifecycleOwner = this
         setTitle(R.string.edit_page_title)
-        editBinding.btEditSave.setOnClickListener { viewModel.updateInfo(currentItemId) }
+        editBinding.btEditSave.setOnClickListener { viewModel.updateInfo(this, currentItemId) }
         initData()
     }
 

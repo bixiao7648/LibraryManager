@@ -56,11 +56,11 @@ class BookRepository {
         }
     }
 
-    fun updateBookInfo(bookInfo: BookInfo) {
+    fun updateBookInfo(bookInfo: BookInfo, onUpdated: () -> Unit) {
         bookScope.launch {
             dao.update(bookInfo)
             withContext(Dispatchers.Main) {
-                Toast.makeText(context, R.string.data_updated, Toast.LENGTH_SHORT).show()
+                onUpdated.invoke()
             }
         }
     }
