@@ -1,7 +1,8 @@
 package com.example.librarymanager
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.librarymanager.databinding.ActivityEditBinding
@@ -26,17 +27,36 @@ class EditActivity : AppCompatActivity() {
         editBinding = DataBindingUtil.setContentView(this, R.layout.activity_edit)
         editBinding.lifecycleOwner = this
         setTitle(R.string.edit_page_title)
-        editBinding.btEditSave.setOnClickListener { viewModel.updateInfo(this, currentItemId) }
+        editBinding.btEditSave.setOnClickListener { updateInfo(currentItemId) }
         initData()
     }
 
     private fun initData() {
         editBinding.activity = this
         editBinding.viewModel = viewModel
-        currentItemId = intent.getIntExtra(COLUMN_ID, -1)
-        viewModel.title = intent.getStringExtra(COLUMN_TITLE) ?: ""
-        viewModel.author = intent.getStringExtra(COLUMN_AUTHOR) ?: ""
-        viewModel.publishYear = intent.getIntExtra(COLUMN_PUBLISH_YEAR, 0).toString()
-        viewModel.isbn = intent.getStringExtra(COLUMN_ISBN) ?: ""
+        intent.extras?.run {
+            currentItemId = getInt(COLUMN_ID, -1)
+            viewModel.title = getString(COLUMN_TITLE, "")
+            viewModel.author = getString(COLUMN_AUTHOR, "")
+            viewModel.publishYear = getInt(COLUMN_PUBLISH_YEAR, 0).toString()
+            viewModel.isbn = getString(COLUMN_ISBN, "")
+        }
+    }
+
+    private fun updateInfo(id: Int) {
+        if (id < 0) {
+            return
+        }
+        BookInfo().let {
+            it.id = id
+            it.title = viewModel.title
+            it.author = viewModel.author
+            it.publishYear = viewModel.publishYear.toInt()
+            it.isbn = viewModel.isbn
+            BookRepository.getInstance().updateBookInfo(it) {
+                editBinding.btEditSave.visibility = View.INVISIBLE
+                finish()
+            }
+        }
     }
 }

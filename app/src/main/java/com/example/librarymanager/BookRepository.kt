@@ -1,7 +1,7 @@
 package com.example.librarymanager
 
 import android.annotation.SuppressLint
-import android.widget.Toast
+import androidx.annotation.VisibleForTesting
 import com.example.librarymanager.db.BookInfo
 import com.example.librarymanager.db.BookInfoDatabase
 import kotlinx.coroutines.*
@@ -56,11 +56,12 @@ class BookRepository {
         }
     }
 
-    fun updateBookInfo(bookInfo: BookInfo, onUpdated: () -> Unit) {
+    fun updateBookInfo(bookInfo: BookInfo, onUpdated: (List<BookInfo>) -> Unit) {
         bookScope.launch {
             dao.update(bookInfo)
+            val booksInfo = dao.getBooks()
             withContext(Dispatchers.Main) {
-                onUpdated.invoke()
+                onUpdated.invoke(booksInfo)
             }
         }
     }
@@ -77,6 +78,12 @@ class BookRepository {
                     return this
                 }
             }
+        }
+
+        @VisibleForTesting
+        fun resetSingleton() {
+            bookRepository = null
+            bookRepository = BookRepository()
         }
     }
 }
