@@ -42,6 +42,10 @@ class MainActivity : AppCompatActivity() {
                 BookRepository.getInstance().showBooks(this, ::update)
             }
         }
+        mainBinding.fab.setOnLongClickListener {
+            startActivity(Intent(this, TestActivity::class.java))
+            true
+        }
         viewModel.searchViewContent.observe(this) {
             BookRepository.getInstance().showBooks(it, ::update)
         }
