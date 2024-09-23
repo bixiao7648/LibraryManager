@@ -6,8 +6,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.librarymanager.speech.SpeechViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import okhttp3.Call
 import okhttp3.Callback
@@ -31,6 +34,9 @@ class TestActivity : AppCompatActivity() {
     private lateinit var etTestInput: EditText
     private lateinit var btTestSend: Button
     private lateinit var tvTestResult: TextView
+    private val speechViewModel: SpeechViewModel by lazy {
+        ViewModelProvider(this)[SpeechViewModel::class.java]
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +46,15 @@ class TestActivity : AppCompatActivity() {
         tvTestResult = findViewById(R.id.tvTestResult)
         btTestSend = findViewById(R.id.btTestSend)
         btTestSend.setOnClickListener { send() }
+        lifecycleScope.launch {
+            speechViewModel.speechContent.collectLatest {
+                currentFocus?.let { view ->
+                    if (view is EditText) {
+                        view.setText(it)
+                    }
+                }
+            }
+        }
     }
 
     private fun send() {
