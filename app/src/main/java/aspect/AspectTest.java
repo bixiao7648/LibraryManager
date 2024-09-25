@@ -22,7 +22,10 @@ public class AspectTest {
     @Before("execution(* com..**(..))")
     public void onActivityMethodBefore2(JoinPoint joinPoint) throws Throwable {
         String key = joinPoint.getSignature().toString();
-        int count = mCountMap.getOrDefault(key, 0);
+        int count = 0;
+        if (mCountMap.containsKey(key)) {
+            count = mCountMap.get(key);
+        }
         if (count > 20) {
             return;
         }
